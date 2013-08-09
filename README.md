@@ -14,7 +14,7 @@ Start
 Credits
 -------
 
-    Takeshi Inoue
-    Maxim Sokhatsky
+* Takeshi Inoue
+* Maxim Sokhatsky
 
 OM A HUM
