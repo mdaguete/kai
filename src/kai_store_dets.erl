@@ -83,6 +83,11 @@ do_get(#data{key=Key, bucket=Bucket} = _Data, State) ->
         _      -> {reply, undefined, State}
     end.
 
+do_match(#data{key=Key, bucket=Bucket} = _Data, State) ->
+    Table = bucket_to_table(Bucket, State),
+    Data = dets:match(Table, #data{key=Key, bucket=Bucket, value='$1'}),
+    {reply, Data, State}.
+
 do_put(Data, State) when is_record(Data, data) ->
     Table = bucket_to_table(Data#data.bucket, State),
     case dets:lookup(Table, Data#data.key) of
@@ -130,6 +135,8 @@ handle_call({list, Bucket}, _From, State) ->
     do_list(Bucket, State);
 handle_call({get, Data}, _From, State) ->
     do_get(Data, State);
+handle_call({match, Data}, _From, State) ->
+    do_match(Data, State);
 handle_call({put, Data}, _From, State) ->
     do_put(Data, State);
 handle_call({delete, Data}, _From, State) ->

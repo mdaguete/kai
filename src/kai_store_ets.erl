@@ -59,6 +59,12 @@ do_get(#data{key=Key} = _Data, State) ->
         _      -> {reply, undefined, State}
     end.
 
+do_match(#data{key=Key} = _Data, State) ->
+    case ets:match(?MODULE, Key) of
+        [Data] -> {reply, Data, State};
+        _      -> {reply, undefined, State}
+    end.
+
 do_put(Data, State) when is_record(Data, data) ->
     case ets:lookup(?MODULE, Data#data.key) of
         [StoredData] ->
@@ -103,6 +109,8 @@ handle_call({list, Bucket}, _From, State) ->
     do_list(Bucket, State);
 handle_call({get, Data}, _From, State) ->
     do_get(Data, State);
+handle_call({match, Data}, _From, State) ->
+    do_match(Data, State);
 handle_call({put, Data}, _From, State) ->
     do_put(Data, State);
 handle_call({delete, Data}, _From, State) ->
