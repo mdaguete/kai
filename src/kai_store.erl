@@ -14,7 +14,7 @@
 
 -export([start_link/0, stop/0]).
 -export([list/1, get/1, put/1, delete/1, info/1, match/1]).
-
+-compile(export_all).
 -include("kai.hrl").
 
 -define(SERVER, ?MODULE).
